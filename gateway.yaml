@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: shared-gateway
+  namespace: gateway-system
+spec:
+  gatewayClassName: gke-l7-global-external-managed
+  addresses:
+  - type: NamedAddress
+    value: gateway-static-ip   # Name of reserved static IP
+  listeners:
+  - name: https
+    protocol: HTTPS
+    port: 443
+    hostname: "*.example.com"   # Accepts all domains
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: wildcard-cert
